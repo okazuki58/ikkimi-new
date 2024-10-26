@@ -189,12 +189,8 @@ export default function ProfileEditModal({
                   </button>
                   <button
                     type="submit"
-                    className={`px-8 py-2 rounded-full text-white font-bold ${
-                      isSaveDisabled
-                        ? "bg-gray-700 cursor-not-allowed"
-                        : "bg-gray-900 md:hover:bg-gray-700"
-                    }`}
-                    disabled={isSaveDisabled}
+                    className="px-8 py-2 rounded-full text-white font-bold bg-gray-900 md:hover:bg-gray-700"
+                    // disabled={isSaveDisabled}
                   >
                     保存
                   </button>

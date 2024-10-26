@@ -20,6 +20,7 @@ interface ProfilePageProps {
 export default function ProfilePage({ profileUser }: ProfilePageProps) {
   const { user: currentUserData, isLoaded } = useUser();
   const { profile, isProfileLoading, setProfile } = useProfile();
+  console.log(profile);
   const [showModal, setShowModal] = useState(false);
   if (!isLoaded) {
     return <div>読み込み中...</div>;
@@ -34,14 +35,16 @@ export default function ProfilePage({ profileUser }: ProfilePageProps) {
 
   return (
     <div className="w-full">
-      <div className="flex gap-8 items-center">
-        <img
-          src={profileUser.imageUrl}
-          alt="ユーザー画像"
-          width={100}
-          height={100}
-          className="rounded-full"
-        />
+      <div className="flex gap-8 items-center ">
+        <div className="overflow-hidden w-24 h-24 rounded-full">
+          <img
+            src={profileUser.imageUrl}
+            alt="ユーザー画像"
+            width={96}
+            height={96}
+            className="w-full h-full object-cover"
+          />
+        </div>
         <p className="text-2xl font-bold">{profileUser.fullName}</p>
         {isOwnProfile ? (
           <button

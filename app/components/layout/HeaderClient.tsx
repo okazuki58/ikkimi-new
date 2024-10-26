@@ -1,13 +1,19 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { BookmarkIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowRightStartOnRectangleIcon,
+  BookmarkIcon,
+  Cog6ToothIcon,
+  MagnifyingGlassIcon,
+  UserIcon,
+} from "@heroicons/react/24/outline";
 import Link from "next/link";
 
 // import { User } from "@supabase/supabase-js";
 import { supabase } from "@/supabaseClient";
 import Image from "next/image";
-import { useClerk } from "@clerk/nextjs";
+import { SignedOut, SignInButton, useClerk } from "@clerk/nextjs";
 import { User } from "@clerk/backend";
 // import LoginModal from "@/app/components/modal/LoginModal";
 // import AlgoSearch from "../AlgoSearch";
@@ -86,7 +92,7 @@ export default function ClientHeader({ user }: { user: User | null }) {
     if (user) {
       const fetchProfile = async () => {
         const { data, error } = await supabase
-          .from("profiles")
+          .from("profiles_v2")
           .select("*")
           .eq("id", user?.id)
           .single();
@@ -161,13 +167,15 @@ export default function ClientHeader({ user }: { user: User | null }) {
               </div>
 
               {user && (
-                <Link href={`/${profile?.username}`}>
+                <Link href={`/profile/${profile?.username}`}>
                   <button
                     type="button"
                     className="relative flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none"
                   >
                     <span className="absolute -inset-1.5" />
-                    <span className="sr-only">View notifications</span>
+                    <span className="sr-only">
+                      View user's bookmarked mangas
+                    </span>
                     <BookmarkIcon aria-hidden="true" className="h-6 w-6" />
                   </button>
                 </Link>
@@ -200,28 +208,29 @@ export default function ClientHeader({ user }: { user: User | null }) {
                     {isMenuOpen && (
                       <div className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5">
                         <Link
-                          key={profile?.username}
-                          href={`/${profile?.username}`}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          href={`/profile/${profile?.username}`}
+                          className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
                           onClick={() => setIsMenuOpen(false)}
                         >
+                          <UserIcon className="h-5 w-5 inline-block" />{" "}
                           プロフィール
                         </Link>
                         <Link
-                          key={profile?.username}
                           href={`/${profile?.username}/settings`}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           onClick={() => setIsMenuOpen(false)}
                         >
+                          <Cog6ToothIcon className="h-5 w-5 inline-block" />
                           アカウント設定
                         </Link>
                         <button
-                          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          className="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           onClick={() => {
                             signOut();
                             setIsMenuOpen(false);
                           }}
                         >
+                          <ArrowRightStartOnRectangleIcon className="h-5 w-5 inline-block" />{" "}
                           ログアウト
                         </button>
                       </div>
@@ -229,20 +238,11 @@ export default function ClientHeader({ user }: { user: User | null }) {
                   </>
                 ) : (
                   <div className="flex gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setIsModalOpen(true)}
-                      className="rounded-md px-3.5 py-2.5 text-sm font-semibold md:hover:bg-secondary focus:outline-none ring-0 transition"
-                    >
-                      ログイン
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setIsModalOpen(true)}
-                      className="rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-white md:hover:bg-primary-light focus:outline-none ring-0 transition"
-                    >
-                      無料登録
-                    </button>
+                    <SignInButton>
+                      <button className="bg-slate-900 text-white px-4 py-2 rounded-md hover:bg-slate-800">
+                        ログイン
+                      </button>
+                    </SignInButton>
                   </div>
                 )}
               </div>

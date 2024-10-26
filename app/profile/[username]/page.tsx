@@ -1,20 +1,16 @@
-import { createClerkClient } from "@clerk/backend";
 import { notFound } from "next/navigation";
 import ProfilePage from "./ProfilePage";
 import { supabase } from "@/supabaseClient";
 
-const clerkClient = createClerkClient({
-  secretKey: process.env.CLERK_SECRET_KEY,
-});
-
 export default async function UserProfile({
   params,
 }: {
-  params: { userId: string };
+  params: { username: string };
 }) {
-  const { userId } = await params;
+  const { username } = await params;
+  console.log("username", username);
 
-  if (!userId) {
+  if (!username) {
     notFound();
   }
 
@@ -22,7 +18,7 @@ export default async function UserProfile({
     const { data: profileUser, error } = await supabase
       .from("profiles_v2")
       .select("*")
-      .eq("id", userId)
+      .eq("username", username)
       .single();
 
     if (error || !profileUser) {

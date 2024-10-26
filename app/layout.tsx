@@ -13,6 +13,7 @@ import Link from "next/link";
 import { currentUser } from "@clerk/nextjs/server";
 import { ProfileProvider } from "./context/ProfileContext";
 import { Toaster } from "sonner";
+import Header from "./components/layout/Header";
 
 const DotIcon = () => {
   return (
@@ -54,28 +55,7 @@ export default async function RootLayout({
       <ProfileProvider>
         <html lang="en">
           <body className="max-w-6xl mx-auto font-sf">
-            <header className="flex justify-between items-center px-4 py-6">
-              <div className="flex items-center gap-4">
-                <Link href="/">
-                  <Image src="/logo.png" alt="logo" width={210} height={100} />
-                </Link>
-              </div>
-              <div className="flex items-center gap-4">
-                <SignedOut>
-                  <SignInButton>
-                    <button className="bg-slate-900 text-white px-4 py-2 rounded-md hover:bg-slate-800">
-                      ログイン
-                    </button>
-                  </SignInButton>
-                </SignedOut>
-                <SignedIn>
-                  <UserButton
-                    userProfileMode="navigation"
-                    userProfileUrl={`/profile/${user?.id}`}
-                  />
-                </SignedIn>
-              </div>
-            </header>
+            <Header />
             <main className="container flex items-center justify-center mx-auto my-10 px-4 sm:px-8 lg:px-4 max-w-5xl">
               {children}
             </main>

@@ -31,20 +31,22 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     // プロフィールデータの取得
     const fetchProfile = async () => {
-      if (!user?.id) return;
+      if (!user?.id || !isLoaded) return;
 
       setIsProfileLoading(true);
+      console.log("userId", user.id);
       const { data, error } = await supabase
         .from("profiles_v2")
         .select("*")
-        .eq("id", user.id)
-        .single();
+        .eq("id", user?.id)
+        .maybeSingle();
 
       if (error) {
-        console.error("Error fetching profile:", error);
+        console.error("Error fetching profile:", error.details);
         toast.error("プロフィールの取得に失敗しました");
       } else {
         setProfile(data);
+        console.log(profile);
       }
 
       setIsProfileLoading(false);

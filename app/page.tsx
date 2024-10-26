@@ -47,7 +47,7 @@ export default function Home() {
 
     if (!existingProfile) {
       const { error } = await supabase.from("profiles_v2").insert({
-        id: userData.id,
+        id: userData.id as string,
         name: userData.fullName,
         avatar_url: userData.imageUrl,
         email: userData.email,
