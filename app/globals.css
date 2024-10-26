@@ -1,3 +1,6 @@
+@import url("https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -14,8 +17,55 @@
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  *:focus {
+    @apply outline-none;
+  }
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  font-size: 12px;
+  background-color: #2d2d2d; /* ツールチップの背景色 */
+  color: #fff; /* ツールチップの文字色 */
+  text-align: center;
+  border-radius: 2px;
+  padding: 5px 8px;
+
+  /* ツールチップの位置を調整 */
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* ツールチップを上に表示 */
+  left: 50%;
+  transform: translateX(-50%);
+
+  /* フェードイン効果 */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+@media (min-width: 767px) {
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.scroll-gradient {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50px;
+  height: 100%;
+  pointer-events: none;
+  background: linear-gradient(
+    to left,
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 0)
+  );
 }
